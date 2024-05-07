@@ -10,7 +10,6 @@ const addOtherBtn = document.getElementById('addOther');
 const newGroceryInput = document.getElementById('newItemGrocery');
 const newOtherInput = document.getElementById('newItemOther');
 
-// Function to create list item with remove button
 function createListItem(text, list) {
     const listItem = document.createElement('li');
     const textNode = document.createTextNode(text);
@@ -27,7 +26,6 @@ function createListItem(text, list) {
     return listItem;
 }
 
-// Function to get GitHub API headers
 function getGitHubHeaders() {
     return {
         'Authorization': `token ${TOKEN}`,
@@ -36,7 +34,6 @@ function getGitHubHeaders() {
     };
 }
 
-// Function to load data from GitHub
 function loadLists() {
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
         method: 'GET',
@@ -65,10 +62,9 @@ function loadLists() {
     });
 }
 
-// Function to save data to GitHub
 function saveLists() {
-    const groceryItems = Array.from(groceryList.children).map(item => item.childNodes[0].textContent);
-    const otherItems = Array.from(otherList.children).map(item => item.childNodes[0].textContent);
+    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
+    const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
 
     const data = { groceryList: groceryItems, otherList: otherItems };
     const content = btoa(JSON.stringify(data));
@@ -112,7 +108,6 @@ function saveLists() {
     });
 }
 
-// Event Listeners
 addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
@@ -131,5 +126,4 @@ addOtherBtn.addEventListener('click', () => {
     }
 });
 
-// Load the saved lists when the page loads
 loadLists();
