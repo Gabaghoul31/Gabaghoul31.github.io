@@ -68,28 +68,33 @@ function saveLists() {
     const data = { groceryList: groceryItems, otherList: otherItems };
 
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `token ${TOKEN}`,
-            'Accept': 'application/vnd.github.everest-preview+json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            event_type: 'update-data',
-            client_payload: { data: JSON.stringify(data) }
+        method: 'GET',
+        headers: getGitHubHeaders()
+    })
+    .then(response => response.json())
+    .then(fileData => {
+        const sha = fileData.sha;
+        fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+            method: 'PUT',
+            headers: getGitHubHeaders(),
+            body: JSON.stringify({
+                message: 'Update data.json',
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
+                sha: sha
+            })
         })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Could not save data to GitHub');
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Data saved successfully:', data);
-    })
-    .catch(error => {
-        console.error('Error saving data:', error);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Could not save data to GitHub');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Data saved successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error saving data:', error);
+        });
     });
 }
 
