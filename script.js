@@ -8,7 +8,7 @@ const otherList = document.getElementById('otherItems');
 const addGroceryBtn = document.getElementById('addGrocery');
 const addOtherBtn = document.getElementById('addOther');
 const newGroceryInput = document.getElementById('newItemGrocery');
-const newOtherInput = document.getElementId('newItemOther');
+const newOtherInput = document.getElementById('newItemOther');
 
 function createListItem(text, list) {
     const listItem = document.createElement('li');
@@ -64,36 +64,20 @@ function loadLists() {
 
 function saveLists() {
     const groceryItems = Array.from(groceryList.children).map(item => item.childNodes[0].textContent);
-    const otherItems = Array.from(otherList.children).map(item => item.childNodes[0].textContent);
-
+    const otherItems = Array.from(otherList.children).map(item.childNodes[0].textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
-    const content = btoa(JSON.stringify(data));
 
-    // Get the file data to determine the SHA
-    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-        method: 'GET',
-        headers: getGitHubHeaders()
-    })
-    .then(response => {
-        if (response.status === 404) {
-            return null;  // File doesn't exist yet
-        }
-        if (!response.ok) {
-            throw new Error('Could not load existing file from GitHub');
-        }
-        return response.json();
-    })
-    .then(fileData => {
-        const sha = fileData ? fileData.sha : null;
-        return fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-            method: 'PUT',
-            headers: getGitHubHeaders(),
-            body: JSON.stringify({
-                message: 'Update data file',
-                content: content,
-                sha: sha
-            })
-        });
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `token ${TOKEN}`,
+            'Accept': 'application/vnd.github.everest-preview+json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            event_type: 'update-data',
+            client_payload: { data: JSON.stringify(data) }
+        })
     })
     .then(response => {
         if (!response.ok) {
@@ -109,12 +93,11 @@ function saveLists() {
     });
 }
 
-// Event Listeners
 addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
         groceryList.appendChild(createListItem(newItem, groceryList));
-        newGroceryInput.value = '';
+        newGroceryInput value = '';
         saveLists();
     }
 });
@@ -123,7 +106,7 @@ addOtherBtn.addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
         otherList.appendChild(createListItem(newItem, otherList));
-        newOtherInput.value = '';
+        newOtherInput value = '';
         saveLists();
     }
 });
