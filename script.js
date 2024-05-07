@@ -8,7 +8,7 @@ const otherList = document.getElementById('otherItems');
 const addGroceryBtn = document.getElementById('addGrocery');
 const addOtherBtn = document.getElementById('addOther');
 const newGroceryInput = document.getElementById('newItemGrocery');
-const newOtherInput = document.getElementById('newItemOther');
+const newOtherInput = document.getElementId('newItemOther');
 
 function createListItem(text, list) {
     const listItem = document.createElement('li');
@@ -41,7 +41,7 @@ function loadLists() {
     })
     .then(response => {
         if (response.status === 404) {
-            return { groceryList: [], otherList: [] };
+            return { groceryList: [], otherList: [] };  // Initialize empty lists if file is missing
         }
         if (!response.ok) {
             throw new Error('Could not load data from GitHub');
@@ -50,7 +50,7 @@ function loadLists() {
     })
     .then(data => {
         const content = atob(data.content || '');
-        const parsedData = content ? JSON.parse(content) : { groceryList: [], otherList: [] };
+        const parsedData = JSON.parse(content);
         groceryList.innerHTML = '';
         otherList.innerHTML = '';
 
@@ -63,19 +63,20 @@ function loadLists() {
 }
 
 function saveLists() {
-    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
-    const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
+    const groceryItems = Array.from(groceryList.children).map(item => item.childNodes[0].textContent);
+    const otherItems = Array.from(otherList.children).map(item => item.childNodes[0].textContent);
 
     const data = { groceryList: groceryItems, otherList: otherItems };
     const content = btoa(JSON.stringify(data));
 
+    // Get the file data to determine the SHA
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
         method: 'GET',
         headers: getGitHubHeaders()
     })
     .then(response => {
         if (response.status === 404) {
-            return null;
+            return null;  // File doesn't exist yet
         }
         if (!response.ok) {
             throw new Error('Could not load existing file from GitHub');
@@ -108,6 +109,7 @@ function saveLists() {
     });
 }
 
+// Event Listeners
 addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
