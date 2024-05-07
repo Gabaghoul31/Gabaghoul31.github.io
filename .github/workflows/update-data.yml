@@ -1,7 +1,6 @@
 name: Update data
 
 on:
-  workflow_dispatch:
   repository_dispatch:
     types:
       - update-data
