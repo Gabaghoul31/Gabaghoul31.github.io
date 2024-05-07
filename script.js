@@ -1,6 +1,6 @@
-const TOKEN = 'your_personal_access_token'; // Replace with your actual GitHub personal access token
-const REPO_OWNER = 'your_username';
-const REPO_NAME = 'username.github.io'; // Replace with your repository name
+const TOKEN = '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'; // Replace with your actual GitHub personal access token
+const REPO_OWNER = 'Gabaghoul31';
+const REPO_NAME = 'Gabaghoul31.io.github'; // Replace with your repository name
 const FILE_PATH = 'data.json';
 
 // Function to create list item with remove button
