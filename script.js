@@ -1,4 +1,4 @@
-const TOKEN = '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'; // Replace with your actual GitHub personal access token
+const TOKEN = '${{ secrets.TOKEN }}';  // Use the GitHub secret
 const REPO_OWNER = 'Gabaghoul31';
 const REPO_NAME = 'Gabaghoul31.github.io';
 const FILE_PATH = 'data.json';
@@ -8,7 +8,7 @@ const otherList = document.getElementById('otherItems');
 const addGroceryBtn = document.getElementById('addGrocery');
 const addOtherBtn = document.getElementById('addOther');
 const newGroceryInput = document.getElementById('newItemGrocery');
-const newOtherInput = document.getElementById('newItemOther');
+const newOtherInput = document.getElementId('newItemOther');
 
 function createListItem(text, list) {
     const listItem = document.createElement('li');
@@ -44,7 +44,7 @@ function loadLists() {
             return { groceryList: [], otherList: [] };  // Initialize empty lists if file is missing
         }
         if (!response.ok) {
-            throw new Error('Could not load data from GitHub');
+            throw an Error('Could not load data from GitHub');
         }
         return response.json();
     })
@@ -63,8 +63,8 @@ function loadLists() {
 }
 
 function saveLists() {
-    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
-    const otherItems = Array.from(otherList.children).map(item.firstChild.textContent);
+    const groceryItems = Array from(groceryList.children).map(item => item.firstChild.textContent);
+    const otherItems = Array from(otherList.children).map(item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`, {
@@ -94,7 +94,7 @@ function saveLists() {
 }
 
 addGroceryBtn.addEventListener('click', () => {
-    const newItem = newGroceryInput.value;
+    const newItem = newGroceryInput value;
     if (newItem) {
         groceryList.appendChild(createListItem(newItem, groceryList));
         newGroceryInput value = '';
@@ -106,7 +106,7 @@ addOtherBtn.addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
         otherList.appendChild(createListItem(newItem, otherList));
-        newOtherInput value = '';
+        newOtherInput.value = '';
         saveLists();
     }
 });
