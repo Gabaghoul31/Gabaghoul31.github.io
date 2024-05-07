@@ -1,4 +1,4 @@
-const TOKEN = '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'; // Replace with your actual GitHub personal access token
+const TOKEN = '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'; // Replace with your actual GitHub personal access token
 const REPO_OWNER = 'Gabaghoul31';
 const REPO_NAME = 'Gabaghoul31.github.io';  // Corrected repository name
 const FILE_PATH = 'data.json';
