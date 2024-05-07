@@ -102,7 +102,7 @@ addGroceryBtn.addEventListener('click', () => {
     }
 });
 
-addOtherBtn addEventListener('click', () => {
+addOtherBtn.addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
         otherList.appendChild(createListItem(newItem, otherList));
