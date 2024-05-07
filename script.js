@@ -97,16 +97,16 @@ addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
         groceryList.appendChild(createListItem(newItem, groceryList));
-        newGroceryInput.value = '';
+        newGroceryInput value = '';
         saveLists();
     }
 });
 
-addOtherBtn.addEventListener('click', () => {
+addOtherBtn addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
         otherList.appendChild(createListItem(newItem, otherList));
-        newOtherInput.value = '';
+        newOtherInput value = '';
         saveLists();
     }
 });
