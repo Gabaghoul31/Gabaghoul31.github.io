@@ -63,8 +63,8 @@ function loadLists() {
 }
 
 function saveLists() {
-    const groceryItems = Array.from(groceryList.children).map(item => item.childNodes[0].textContent);
-    const otherItems = Array.from(otherList.children).map(item.childNodes[0].textContent);
+    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
+    const otherItems = Array.from(otherList.children).map(item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`, {
@@ -97,7 +97,7 @@ addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
         groceryList.appendChild(createListItem(newItem, groceryList));
-        newGroceryInput value = '';
+        newGroceryInput.value = '';
         saveLists();
     }
 });
@@ -106,7 +106,7 @@ addOtherBtn.addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
         otherList.appendChild(createListItem(newItem, otherList));
-        newOtherInput value = '';
+        newOtherInput.value = '';
         saveLists();
     }
 });
