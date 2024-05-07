@@ -67,7 +67,7 @@ function saveLists() {
     const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
-    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`, {
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
         method: 'POST',
         headers: {
             'Authorization': `token ${TOKEN}`,
