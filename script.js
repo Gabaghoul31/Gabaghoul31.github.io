@@ -1,23 +1,23 @@
 const TOKEN = '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'; // Replace with your actual GitHub personal access token
 const REPO_OWNER = 'Gabaghoul31';
-const REPO_NAME = 'Gabaghoul31.github.io'; // Replace with your repository name
+const REPO_NAME = 'Gabaghoul31.github.io';  // Corrected repository name
 const FILE_PATH = 'data.json';
 
 // Function to create list item with remove button
 function createListItem(text, list) {
-  const listItem = document.createElement('li');
-  const textNode = document.createTextNode(text);
-  listItem.appendChild(textNode);
+    const listItem = document.createElement('li');
+    const textNode = document.createTextNode(text);
+    listItem.appendChild(textNode);
 
-  const removeBtn = document.createElement('button');
-  removeBtn.textContent = 'Remove';
-  removeBtn.addEventListener('click', () => {
-    list.removeChild(listItem);
-    saveLists();
-  });
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+    removeBtn.addEventListener('click', () => {
+        list.removeChild(listItem);
+        saveLists();
+    });
 
-  listItem.appendChild(removeBtn);
-  return listItem;
+    listItem.appendChild(removeBtn);
+    return listItem;
 }
 
 // Function to get GitHub API headers
@@ -36,14 +36,17 @@ function loadLists() {
         headers: getGitHubHeaders()
     })
     .then(response => {
+        if (response.status === 404) {
+            return { groceryList: [], otherList: [] };  // Handle missing file
+        }
         if (!response.ok) {
             throw new Error('Could not load data from GitHub');
         }
         return response.json();
     })
     .then(data => {
-        const content = atob(data.content);
-        const parsedData = JSON.parse(content);
+        const content = atob(data.content || '');
+        const parsedData = content ? JSON.parse(content) : { groceryList: [], otherList: [] };
         groceryList.innerHTML = '';
         otherList.innerHTML = '';
 
@@ -69,13 +72,14 @@ function saveLists() {
     })
     .then(response => response.json())
     .then(fileData => {
+        const sha = fileData.sha || null;  // Handle missing sha
         return fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
             method: 'PUT',
             headers: getGitHubHeaders(),
             body: JSON.stringify({
                 message: 'Update data file',
                 content: content,
-                sha: fileData.sha
+                sha: sha
             })
         });
     })
@@ -93,25 +97,24 @@ function saveLists() {
     });
 }
 
-  
-  // Event Listeners
-  addGroceryBtn.addEventListener('click', () => {
+// Event Listeners
+addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
-      groceryList.appendChild(createListItem(newItem, groceryList));
-      newGroceryInput.value = '';
-      saveLists();
+        groceryList.appendChild(createListItem(newItem, groceryList));
+        newGroceryInput.value = '';
+        saveLists();
     }
-  });
-  
-  addOtherBtn.addEventListener('click', () => {
+});
+
+addOtherBtn.addEventlistener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
-      otherList.appendChild(createListItem(newItem, otherList));
-      newOtherInput.value = '';
-      saveLists();
+        otherList.appendChild(createListItem(newItem, otherList));
+        newOtherInput value = '';
+        saveLists();
     }
-  });
-  
-  // Load the saved lists when the page loads
-  loadLists();
+});
+
+// Load the saved lists when the page loads
+loadLists();
