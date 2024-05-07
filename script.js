@@ -68,7 +68,7 @@ function saveLists() {
     const data = { groceryList: groceryItems, otherList: otherItems };
 
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Authorization': `token ${TOKEN}`,
             'Accept': 'application/vnd.github.everest-preview+json',
