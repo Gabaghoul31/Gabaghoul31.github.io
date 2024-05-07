@@ -8,7 +8,7 @@ const otherList = document.getElementById('otherItems');
 const addGroceryBtn = document.getElementById('addGrocery');
 const addOtherBtn = document.getElementById('addOther');
 const newGroceryInput = document.getElementById('newItemGrocery');
-const newOtherInput = document.getElementId('newItemOther');
+const newOtherInput = document.getElementById('newItemOther');
 
 function createListItem(text, list) {
     const listItem = document.createElement('li');
@@ -44,7 +44,7 @@ function loadLists() {
             return { groceryList: [], otherList: [] };  // Initialize empty lists if file is missing
         }
         if (!response.ok) {
-            throw an Error('Could not load data from GitHub');
+            throw new Error('Could not load data from GitHub');
         }
         return response.json();
     })
@@ -63,8 +63,8 @@ function loadLists() {
 }
 
 function saveLists() {
-    const groceryItems = Array from(groceryList.children).map(item => item.firstChild.textContent);
-    const otherItems = Array from(otherList.children).map(item.firstChild.textContent);
+    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
+    const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/dispatches`, {
@@ -94,10 +94,10 @@ function saveLists() {
 }
 
 addGroceryBtn.addEventListener('click', () => {
-    const newItem = newGroceryInput value;
+    const newItem = newGroceryInput.value;
     if (newItem) {
         groceryList.appendChild(createListItem(newItem, groceryList));
-        newGroceryInput value = '';
+        newGroceryInput.value = '';
         saveLists();
     }
 });
