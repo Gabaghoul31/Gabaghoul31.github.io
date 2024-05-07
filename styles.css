@@ -1,0 +1,14 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+.grocery-list, .other-needs {
+    margin-bottom: 20px;
+}
+
+/* Add more styles as needed to make it look nice! */

@@ -1,0 +1,117 @@
+const TOKEN = 'your_personal_access_token'; // Replace with your actual GitHub personal access token
+const REPO_OWNER = 'your_username';
+const REPO_NAME = 'username.github.io'; // Replace with your repository name
+const FILE_PATH = 'data.json';
+
+// Function to create list item with remove button
+function createListItem(text, list) {
+  const listItem = document.createElement('li');
+  const textNode = document.createTextNode(text);
+  listItem.appendChild(textNode);
+
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = 'Remove';
+  removeBtn.addEventListener('click', () => {
+    list.removeChild(listItem);
+    saveLists();
+  });
+
+  listItem.appendChild(removeBtn);
+  return listItem;
+}
+
+// Function to get GitHub API headers
+function getGitHubHeaders() {
+    return {
+        'Authorization': `token ${TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+    };
+}
+
+// Function to load data from GitHub
+function loadLists() {
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+        method: 'GET',
+        headers: getGitHubHeaders()
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Could not load data from GitHub');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const content = atob(data.content);
+        const parsedData = JSON.parse(content);
+        groceryList.innerHTML = '';
+        otherList.innerHTML = '';
+
+        parsedData.groceryList.forEach(item => groceryList.appendChild(createListItem(item, groceryList)));
+        parsedData.otherList.forEach(item => otherList.appendChild(createListItem(item, otherList)));
+    })
+    .catch(error => {
+        console.error('Error loading data:', error);
+    });
+}
+
+// Function to save data to GitHub
+function saveLists() {
+    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
+    const otherItems = Array.from(otherList.children).map(item.firstChild.textContent);
+
+    const data = { groceryList: groceryItems, otherList: otherItems };
+    const content = btoa(JSON.stringify(data));
+
+    fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+        method: 'GET',
+        headers: getGitHubHeaders()
+    })
+    .then(response => response.json())
+    .then(fileData => {
+        return fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+            method: 'PUT',
+            headers: getGitHubHeaders(),
+            body: JSON.stringify({
+                message: 'Update data file',
+                content: content,
+                sha: fileData.sha
+            })
+        });
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Could not save data to GitHub');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Data saved successfully:', data);
+    })
+    .catch(error => {
+        console.error('Error saving data:', error);
+    });
+}
+
+  
+  // Event Listeners
+  addGroceryBtn.addEventListener('click', () => {
+    const newItem = newGroceryInput.value;
+    if (newItem) {
+      groceryList.appendChild(createListItem(newItem, groceryList));
+      newGroceryInput.value = '';
+      saveLists();
+    }
+  });
+  
+  addOtherBtn.addEventListener('click', () => {
+    const newItem = newOtherInput.value;
+    if (newItem) {
+      otherList.appendChild(createListItem(newItem, otherList));
+      newOtherInput.value = '';
+      saveLists();
+    }
+  });
+  
+  // Load the saved lists when the page loads
+  loadLists();
