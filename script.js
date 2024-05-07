@@ -1,9 +1,8 @@
 const TOKEN = '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'; // Replace with your actual GitHub personal access token
 const REPO_OWNER = 'Gabaghoul31';
-const REPO_NAME = 'Gabaghoul31.github.io';  // Corrected repository name
+const REPO_NAME = 'Gabaghoul31.github.io';
 const FILE_PATH = 'data.json';
 
-// Function to create list item with remove button
 function createListItem(text, list) {
     const listItem = document.createElement('li');
     const textNode = document.createTextNode(text);
@@ -20,7 +19,6 @@ function createListItem(text, list) {
     return listItem;
 }
 
-// Function to get GitHub API headers
 function getGitHubHeaders() {
     return {
         'Authorization': `token ${TOKEN}`,
@@ -29,7 +27,6 @@ function getGitHubHeaders() {
     };
 }
 
-// Function to load data from GitHub
 function loadLists() {
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
         method: 'GET',
@@ -37,7 +34,7 @@ function loadLists() {
     })
     .then(response => {
         if (response.status === 404) {
-            return { groceryList: [], otherList: [] };  // Handle missing file
+            return { groceryList: [], otherList: [] };
         }
         if (!response.ok) {
             throw new Error('Could not load data from GitHub');
@@ -58,7 +55,6 @@ function loadLists() {
     });
 }
 
-// Function to save data to GitHub
 function saveLists() {
     const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
     const otherItems = Array.from(otherList.children).map(item.firstChild.textContent);
@@ -70,9 +66,18 @@ function saveLists() {
         method: 'GET',
         headers: getGitHubHeaders()
     })
-    .then(response => response.json())
+    .then(response => {
+        if (response.status === 404) {
+            // File doesn't exist yet
+            return null;
+        }
+        if (!response.ok) {
+            throw new Error('Could not load existing file from GitHub');
+        }
+        return response.json();
+    })
     .then(fileData => {
-        const sha = fileData.sha || null;  // Handle missing sha
+        const sha = fileData ? fileData.sha : null;
         return fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
             method: 'PUT',
             headers: getGitHubHeaders(),
@@ -107,11 +112,11 @@ addGroceryBtn.addEventListener('click', () => {
     }
 });
 
-addOtherBtn.addEventlistener('click', () => {
+addOtherBtn.addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
         otherList.appendChild(createListItem(newItem, otherList));
-        newOtherInput value = '';
+        newOtherInput.value = '';
         saveLists();
     }
 });
