@@ -31,22 +31,29 @@ function loadLists() {
     .then(response => {
         console.log(`Load response:`, response);
         if (!response.ok) throw new Error('Failed to load data');
-        return response.json(); // Parses the JSON
+        return response.json();
     })
     .then(data => {
         console.log("Loaded data:", data);
-        // Assuming data is the direct structure expected if not wrap inside {data: ...}
-        groceryList.innerHTML = '';
-        otherList.innerHTML = '';
+        // Add checks to ensure data exists
+        if (data && data.groceryList && data.otherList) {
+            groceryList.innerHTML = '';
+            otherList.innerHTML = '';
 
-        data.groceryList.forEach(item => groceryList.appendChild(createListItem(item, groceryList)));
-        data.otherList.forEach(item => otherList.appendChild(createListItem(item, otherList)));
+            data.groceryList.forEach(item => {
+                groceryList.appendChild(createListItem(item, groceryList));
+            });
+            data.otherList.forEach(item => {
+                otherList.appendChild(createListItem(item, otherList));
+            });
+        } else {
+            console.error('Data is missing or not in the expected format:', data);
+        }
     })
     .catch(error => {
         console.error('Error loading data:', error);
     });
 }
-
 function saveLists() {
     const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
     const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
