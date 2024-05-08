@@ -1,65 +1,83 @@
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-require('dotenv').config();
+const groceryList = document.getElementById('groceryItems');
+const otherList = document.getElementById('otherItems');
+const addGroceryBtn = document.getElementById('addGrocery');
+const addOtherBtn = document.getElementById('addOther');
+const newGroceryInput = document.getElementById('newItemGrocery');
+const newOtherInput = document.getElementById('newItemOther');
 
-const app = express();
-app.use(express.json());
-app.use(cors());
+function createListItem(text, list) {
+    const listItem = document.createElement('li');
+    const textNode = document.createTextNode(text);
+    listItem.appendChild(textNode);
 
-const PORT = process.env.PORT || 3000;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const REPO = 'Gabaghoul31/Gabaghoul31.github.io';
-const FILE_PATH = 'data.json';
-
-// Load data from GitHub
-app.get('/load-data', (req, res) => {
-    axios.get(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-        headers: {
-            Authorization: `Bearer ${GITHUB_TOKEN}`,
-            Accept: 'application/vnd.github.v3.raw'
-        }
-    }).then(response => {
-        const listData = JSON.parse(response.data);
-        res.json(listData);
-    }).catch(error => {
-        console.error('Error loading data:', error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'Failed to load data', details: error.message });
+    const removeBtn = document.createElement('button');
+    removeBtn.textContent = 'Remove';
+    removeBtn.addEventListener('click', () => {
+        list.removeChild(listItem);
+        saveLists();
     });
-});
 
-// Update data on GitHub
-app.post('/update-data', (req, res) => {
-    const data = req.body;
-    const message = 'Update data.json';
-    const content = Buffer.from(JSON.stringify(data)).toString('base64');
+    listItem.appendChild(removeBtn);
+    return listItem;
+}
 
-    axios.get(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-        headers: {
-            Authorization: `Bearer ${GITHUB_TOKEN}`,
-            Accept: 'application/vnd.github.v3+json'
-        }
-    }).then(response => {
-        const sha = response.data.sha;
+function loadLists() {
+    console.log("Attempting to load lists...");
+    fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/load-data')
+    .then(response => {
+        if (!response.ok) throw new Error('Failed to load data');
+        return response.json(); // Automatically parses JSON
+    })
+    .then(data => {
+        console.log("Loaded data:", data);
+        groceryList.innerHTML = '';
+        otherList.innerHTML = '';
 
-        return axios.put(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
-            message,
-            content,
-            sha
-        }, {
-            headers: {
-                Authorization: `Bearer ${GITHUB_TOKEN}`,
-                Accept: 'application/vnd.github.v3+json'
-            }
+        data.groceryList.forEach(item => {
+            groceryList.appendChild(createListItem(item, groceryList));
         });
-    }).then(() => {
-        res.json({ message: 'Data updated successfully' });
-    }).catch(error => {
-        console.error('Error updating data:', error.response ? error.response.data : error.message);
-        res.status(500).json({ error: 'Failed to update data', details: error.message });
+        data.otherList.forEach(item => {
+            otherList.appendChild(createListItem(item, otherList));
+        });
+    })
+    .catch(error => {
+        console.error('Error loading data:', error);
     });
+}
+
+function saveLists() {
+    const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
+    const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
+    const data = { groceryList: groceryItems, otherList: otherItems };
+
+    fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/update-data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => console.log('Save result:', result))
+    .catch(error => console.error('Error on save:', error));
+}
+
+addGroceryBtn.addEventListener('click', () => {
+    const newItem = newGroceryInput.value;
+    if (newItem) {
+        groceryList.appendChild(createListItem(newItem, groceryList));
+        newGroceryInput.value = '';
+        saveLists();
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+addOtherBtn.addEventListener('click', () => {
+    const newItem = newOtherInput.value;
+    if (newItem) {
+        otherList.appendChild(createListItem(newItem, otherList));
+        newOtherInput.value = '';
+        saveLists();
+    }
 });
+
+loadLists();
