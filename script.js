@@ -29,26 +29,20 @@ function loadLists() {
     console.log("Attempting to load lists...");
     fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/load-data')
     .then(response => {
-        console.log(`Load response:`, response);
         if (!response.ok) throw new Error('Failed to load data');
-        return response.json(); // Parses the JSON automatically
+        return response.json();
     })
     .then(data => {
         console.log("Loaded data:", data);
-        if (data && Array.isArray(data.groceryList) && Array.isArray(data.otherList)) {
-            groceryList.innerHTML = '';
-            otherList.innerHTML = '';
-
-            data.groceryList.forEach(item => {
-                groceryList.appendChild(createListItem(item, groceryList));
-            });
-            data.otherList.forEach(item => {
-                otherList.appendChild(createListItem(item, otherList));
-            });
-        } else {
-            console.error('Data is missing or not in the expected format:', data);
-            throw new Error('Data is missing or not in the expected format');
-        }
+        groceryList.innerHTML = '';
+        otherList.innerHTML = '';
+        
+        data.groceryList.forEach(item => {
+            groceryList.appendChild(createListItem(item, groceryList));
+        });
+        data.otherList.forEach(item => {
+            otherList.appendChild(createListItem(item, otherList));
+        });
     })
     .catch(error => {
         console.error('Error loading data:', error);
