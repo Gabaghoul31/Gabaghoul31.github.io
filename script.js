@@ -31,19 +31,18 @@ function loadLists() {
     .then(response => {
         console.log(`Load response:`, response);
         if (!response.ok) throw new Error('Failed to load data');
-        return response.json(); // This automatically parses the JSON
+        return response.json(); // Parses the JSON automatically
     })
     .then(data => {
         console.log("Loaded data:", data);
-        // Ensure both groceryList and otherList exist and are arrays
         if (data && Array.isArray(data.groceryList) && Array.isArray(data.otherList)) {
             groceryList.innerHTML = '';
             otherList.innerHTML = '';
 
-            data.data.groceryList.forEach(item => {
+            data.groceryList.forEach(item => {
                 groceryList.appendChild(createListItem(item, groceryList));
             });
-            data.data.otherList.forEach(item => {
+            data.otherList.forEach(item => {
                 otherList.appendChild(createListItem(item, otherList));
             });
         } else {
