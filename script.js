@@ -35,12 +35,18 @@ function getGitHubHeaders() {
 }
 
 function loadLists() {
+    console.log("Attempting to load lists...");
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
         method: 'GET',
         headers: getGitHubHeaders()
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log(`Load response:`, response);
+        if (!response.ok) throw new Error('Failed to load data');
+        return response.json();
+    })
     .then(data => {
+        console.log("Loaded data:", data);
         const content = atob(data.content || '');
         const parsedData = JSON.parse(content);
         groceryList.innerHTML = '';
@@ -55,15 +61,19 @@ function loadLists() {
 }
 
 function saveLists() {
+    console.log("Attempting to save lists...");
     const groceryItems = Array.from(groceryList.children).map(item => item.firstChild.textContent);
     const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
-    // Fetch the current file to get the SHA
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
         headers: getGitHubHeaders()
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log(`Fetch file for SHA response:`, response);
+        if (!response.ok) throw new Error('Failed to fetch current data file');
+        return response.json();
+    })
     .then(fileData => {
         const updateBody = {
             message: "Update data.json",
@@ -71,16 +81,14 @@ function saveLists() {
             sha: fileData.sha
         };
 
-        // Updating the file with new content
         fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
             method: 'PUT',
             headers: getGitHubHeaders(),
             body: JSON.stringify(updateBody)
         })
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Could not save data to GitHub');
-            }
+            console.log("Save response:", response);
+            if (!response.ok) throw new Error('Failed to save data');
             return response.json();
         })
         .then(data => {
@@ -94,7 +102,6 @@ function saveLists() {
         console.error('Error fetching current data file:', error);
     });
 }
-
 addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
