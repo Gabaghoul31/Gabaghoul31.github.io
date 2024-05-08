@@ -55,7 +55,7 @@ function saveLists() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ groceryList: groceryItems, otherList: otherItems })
+        body: JSON.stringify(data) // Pass data directly
     })
     .then(response => response.json())
     .then(result => console.log('Save result:', result))
