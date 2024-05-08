@@ -36,7 +36,7 @@ function loadLists() {
     .then(data => {
         console.log("Loaded data:", data);
         // Ensure both groceryList and otherList exist and are arrays
-        if (data.data && Array.isArray(data.data.groceryList) && Array.isArray(data.data.otherList)) {
+        if (data && Array.isArray(data.groceryList) && Array.isArray(data.otherList)) {
             groceryList.innerHTML = '';
             otherList.innerHTML = '';
 
