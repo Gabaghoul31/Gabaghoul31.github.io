@@ -31,16 +31,16 @@ function loadLists() {
     .then(response => {
         console.log(`Load response:`, response);
         if (!response.ok) throw new Error('Failed to load data');
-        return response.json(); // This automatically parses the JSON
+        return response.json(); // Parses the JSON
     })
     .then(data => {
         console.log("Loaded data:", data);
-        const parsedData = data.data; // Adjust this according to how data is structured
+        // Assuming data is the direct structure expected if not wrap inside {data: ...}
         groceryList.innerHTML = '';
         otherList.innerHTML = '';
 
-        parsedData.groceryList.forEach(item => groceryList.appendChild(createListItem(item, groceryList)));
-        parsedData.otherList.forEach(item => otherList.appendChild(createListItem(item, otherList)));
+        data.groceryList.forEach(item => groceryList.appendChild(createListItem(item, groceryList)));
+        data.otherList.forEach(item => otherList.appendChild(createListItem(item, otherList)));
     })
     .catch(error => {
         console.error('Error loading data:', error);
@@ -52,16 +52,16 @@ function saveLists() {
     const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
-    fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/update-data', {  // Replace YOUR-HEROKU-APP with your actual Heroku app name
+    fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/update-data', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({data})
     })
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.error('Error:', error));
+    .then(response => response.json()) // Assuming the server might send a JSON response
+    .then(result => console.log('Save result:', result))
+    .catch(error => console.error('Error on save:', error));
 }
 
 addGroceryBtn.addEventListener('click', () => {
