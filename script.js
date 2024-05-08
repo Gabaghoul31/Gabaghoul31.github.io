@@ -1,7 +1,3 @@
-const REPO_OWNER = 'Gabaghoul31';
-const REPO_NAME = 'Gabaghoul31.github.io';
-const FILE_PATH = 'data.json';
-
 const groceryList = document.getElementById('groceryItems');
 const otherList = document.getElementById('otherItems');
 const addGroceryBtn = document.getElementById('addGrocery');
@@ -30,13 +26,13 @@ function loadLists() {
     fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/load-data')
     .then(response => {
         if (!response.ok) throw new Error('Failed to load data');
-        return response.json();
+        return response.json(); // Automatically parses JSON
     })
     .then(data => {
         console.log("Loaded data:", data);
         groceryList.innerHTML = '';
         otherList.innerHTML = '';
-        
+
         data.groceryList.forEach(item => {
             groceryList.appendChild(createListItem(item, groceryList));
         });
@@ -59,9 +55,9 @@ function saveLists() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({data})
+        body: JSON.stringify({ groceryList: groceryItems, otherList: otherItems })
     })
-    .then(response => response.json()) // Assuming the server might send a JSON response
+    .then(response => response.json())
     .then(result => console.log('Save result:', result))
     .catch(error => console.error('Error on save:', error));
 }
@@ -85,4 +81,3 @@ addOtherBtn.addEventListener('click', () => {
 });
 
 loadLists();
-
