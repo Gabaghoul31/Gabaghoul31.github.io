@@ -39,15 +39,7 @@ function loadLists() {
         method: 'GET',
         headers: getGitHubHeaders()
     })
-    .then(response => {
-        if (response.status === 404) {
-            return { groceryList: [], otherList: [] };  // Initialize empty lists if file is missing
-        }
-        if (!response.ok) {
-            throw new Error('Could not load data from GitHub');
-        }
-        return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
         const content = atob(data.content || '');
         const parsedData = JSON.parse(content);
@@ -67,21 +59,23 @@ function saveLists() {
     const otherItems = Array.from(otherList.children).map(item => item.firstChild.textContent);
     const data = { groceryList: groceryItems, otherList: otherItems };
 
+    // Fetch the current file to get the SHA
     fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
-        method: 'GET',
         headers: getGitHubHeaders()
     })
     .then(response => response.json())
     .then(fileData => {
-        const sha = fileData.sha;
+        const updateBody = {
+            message: "Update data.json",
+            content: btoa(JSON.stringify(data)),
+            sha: fileData.sha
+        };
+
+        // Updating the file with new content
         fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
             method: 'PUT',
             headers: getGitHubHeaders(),
-            body: JSON.stringify({
-                message: 'Update data.json',
-                content: btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
-                sha: sha
-            })
+            body: JSON.stringify(updateBody)
         })
         .then(response => {
             if (!response.ok) {
@@ -95,6 +89,9 @@ function saveLists() {
         .catch(error => {
             console.error('Error saving data:', error);
         });
+    })
+    .catch(error => {
+        console.error('Error fetching current data file:', error);
     });
 }
 
