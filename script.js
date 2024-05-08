@@ -27,17 +27,15 @@ function createListItem(text, list) {
 
 function loadLists() {
     console.log("Attempting to load lists...");
-    fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/load-data', {  // Replace YOUR-HEROKU-APP with your actual Heroku app name
-        method: 'GET'
-    })
+    fetch('https://morning-woodland-96579-141743ef28e3.herokuapp.com/load-data')
     .then(response => {
         console.log(`Load response:`, response);
         if (!response.ok) throw new Error('Failed to load data');
-        return response.json();
+        return response.json(); // This automatically parses the JSON
     })
     .then(data => {
         console.log("Loaded data:", data);
-        const parsedData = JSON.parse(data);
+        const parsedData = data.data; // Adjust this according to how data is structured
         groceryList.innerHTML = '';
         otherList.innerHTML = '';
 
