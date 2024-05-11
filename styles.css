@@ -1,20 +1,20 @@
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
-    background-color: #e0f2f7; /* Light sky blue */
-    color: #f48fb1; /* Slightly darker pink for body text */
+    background-color: #e0f2f7;
+    color: #f50057; /* Slightly darker pink for body text */
 }
 
 h1 {
     text-align: center;
-    color: #bf953f; /* Darker gold */
-    font-size: 2.5em; /* Larger font size for the main header */
-    margin-top: 0; 
+    color: #C79000; /* Darker gold for header */
+    font-size: 3em; /* Larger header size */
+    margin-top: 0;
 }
 
 h2 {
     text-align: center;
-    color: #303f9f; /* Slightly darker blue for second headings */
+    color: #2196f3; /* Slightly lighter blue for second headings */
 }
 
 /* Add a horizontal bar above the header */
@@ -23,12 +23,12 @@ h1:before {
     display: block;
     width: 100%;
     height: 10px;
-    background-color: #3f51b5; 
-    margin-bottom: 15px; 
+    background-color: #3f51b5;
+    margin-bottom: 15px;
 }
 
 .grocery-list, .other-needs {
-    text-align: center; 
+    text-align: center;
     margin-bottom: 20px;
 }
 
@@ -39,27 +39,26 @@ input[type="text"], button {
     margin: 5px;
 }
 
-/* Keep the same styles for buttons */
 button {
-    background-color: #4CAF50; 
+    background-color: #4CAF50;
     color: white;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049; 
+    background-color: #45a049;
 }
 
 /* Optional: Add some rounded corners to sections */
 .grocery-list, .other-needs {
     border-radius: 8px;
     padding: 15px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-/* Style list items with diamond-shaped bullets */
+/* Style list items with diamond bullets */
 ul {
-    list-style-type: none; 
+    list-style-type: none; /* Remove default bullets */
     padding: 0;
 }
 
@@ -68,6 +67,6 @@ li {
 }
 
 li::before {
-    content: "\2666"; /* Unicode character for a diamond */
-    margin-right: 5px; 
+    content: "\2666"; /* Unicode character for diamond */
+    margin-right: 5px;
 }
