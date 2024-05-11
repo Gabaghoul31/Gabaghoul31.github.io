@@ -9,14 +9,14 @@ h1 {
     text-align: center;
     color: #bf953f;
     font-size: 3em;
-    font-family: "Pacifico", cursive; /* Example of a different font for h1 */
+    font-family: 'Playfair Display', serif; /* Changed font for main header */
     margin-top: 0;
 }
 
 h2 {
     text-align: center;
     color: #2196f3;
-    font-family: "Roboto Slab", serif; /* Example of a different font for h2 */
+    font-family: 'Montserrat', sans-serif; /* Changed font for second headings */
 }
 
 /* Add a horizontal bar above the header */
@@ -71,4 +71,13 @@ li {
 li::before {
     content: "\2666"; /* Unicode character for diamond */
     margin-right: 5px;
+}
+
+/* Style the calendar */
+#calendar {
+    width: 80%; /* Adjust width as needed */
+    margin: 20px auto; /* Center the calendar */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
