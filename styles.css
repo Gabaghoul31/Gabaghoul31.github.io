@@ -2,12 +2,12 @@ body {
     font-family: Arial, sans-serif;
     margin: 20px;
     background-color: #e0f2f7;
-    color: #f50057; /* Slightly darker pink for body text */
+    color: #f48fb1; /* Slightly darker pink for body text */
 }
 
 h1 {
     text-align: center;
-    color: #C79000; /* Darker gold for header */
+    color: #bf953f; /* Darker gold for header */
     font-size: 3em; /* Larger header size */
     margin-top: 0;
 }
