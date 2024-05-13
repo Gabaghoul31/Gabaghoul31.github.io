@@ -81,3 +81,46 @@ addOtherBtn.addEventListener('click', () => {
 });
 
 loadLists();
+
+// Calendar Functionality
+const calendarDiv = document.getElementById('calendar');
+const currentDate = new Date();
+
+function renderCalendar(year = currentDate.getFullYear(), month = currentDate.getMonth()) {
+    const firstDay = (new Date(year, month)).getDay();
+    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+
+    let calendarHTML = `
+        <table>
+            <thead>
+                <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
+            </thead>
+            <tbody>
+    `;
+
+    let dayCounter = 1;
+    for (let i = 0; i < 6; i++) { // Max 6 weeks in a month
+        calendarHTML += '<tr>';
+        for (let j = 0; j < 7; j++) {
+            if (i === 0 && j < firstDay) {
+                calendarHTML += '<td></td>';
+            } else if (dayCounter > daysInMonth) {
+                break;
+            } else {
+                calendarHTML += `<td ${dayCounter === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear() ? 'class="today"' : ''}>${dayCounter}</td>`;
+                dayCounter++;
+            }
+        }
+        calendarHTML += '</tr>';
+    }
+
+    calendarHTML += `
+            </tbody>
+        </table>
+    `;
+
+    calendarDiv.innerHTML = calendarHTML;
+}
+
+// Initial Calendar Render
+renderCalendar(); 
