@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif; /* Keep body text font as Arial */
+    font-family: Arial, sans-serif;
     margin: 20px;
     background-color: #e0f2f7;
     color: #f48fb1;
@@ -9,17 +9,16 @@ h1 {
     text-align: center;
     color: #bf953f;
     font-size: 3em;
-    font-family: 'Playfair Display', serif; /* Changed font for main header */
+    font-family: 'Playfair Display', serif;
     margin-top: 0;
 }
 
 h2 {
     text-align: center;
     color: #2196f3;
-    font-family: 'Montserrat', sans-serif; /* Changed font for second headings */
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* Add a horizontal bar above the header */
 h1:before {
     content: "";
     display: block;
@@ -51,16 +50,15 @@ button:hover {
     background-color: #45a049;
 }
 
-/* Optional: Add some rounded corners to sections */
 .grocery-list, .other-needs {
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-/* Style list items with diamond bullets */
+
 ul {
-    list-style-type: none; /* Remove default bullets */
+    list-style-type: none; 
     padding: 0;
 }
 
@@ -69,14 +67,13 @@ li {
 }
 
 li::before {
-    content: "\2666"; /* Unicode character for diamond */
+    content: "\2666"; 
     margin-right: 5px;
 }
 
-/* Style the calendar */
 #calendar {
-    width: 80%; /* Adjust width as needed */
-    margin: 20px auto; /* Center the calendar */
+    width: 80%; 
+    margin: 20px auto; 
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
