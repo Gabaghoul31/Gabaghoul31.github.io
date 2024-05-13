@@ -74,14 +74,38 @@ li::before {
 #calendar table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px; /* Add some space above the table */
+    padding: 20px; /* Increased padding */
 }
 
 #calendar th {
-    background-color: #3f51b5; /* Match the top bar color */
     color: white;
-    padding: 10px; /* Increase padding */
     font-weight: bold;
+}
+
+#calendar .month-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #3f51b5; /* Matching top bar color */
+    color: white; /* Readable text */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+#calendar .weekdays {
+    display: flex;
+    justify-content: space-around;
+    background-color: #3f51b5; /* Matching top bar color */
+    color: white; /* Readable text */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+#calendar .weekdays div {
+    width: 14.28%; /* 100% / 7 days */
+    text-align: center;
 }
 
 #calendar td {
@@ -89,8 +113,8 @@ li::before {
     height: 30px;
     text-align: center;
     border: 1px solid #ddd;
-    padding: 15px; /* Increase padding */
-    background-color: #d7c79e; /* Lighter shade of the Family Site text color */
+    padding: 10px; /* Increased padding */
+    background-color: #d8c4a3; /* Lighter hue of #bf953f */
 }
 
 #calendar .today {
