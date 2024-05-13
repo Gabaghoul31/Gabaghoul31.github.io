@@ -141,6 +141,8 @@ calendar.appendChild(prevMonthBtn);
 calendar.appendChild(nextMonthBtn);
 calendar.appendChild(calendarGrid);
 
+renderCalendar(); // Initial rendering
+
 // Create the calendar header rows
 const monthRow = document.createElement('tr');
 const weekdayRow = document.createElement('tr');
@@ -161,5 +163,3 @@ weekdays.forEach(day => {
 
 calendarGrid.insertBefore(weekdayRow, calendarGrid.firstChild); // Insert weekday row
 calendarGrid.insertBefore(monthRow, weekdayRow); // Insert month row above weekday row
-
-renderCalendar(); // Initial rendering
