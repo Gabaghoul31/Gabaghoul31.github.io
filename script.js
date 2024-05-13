@@ -83,44 +83,62 @@ addOtherBtn.addEventListener('click', () => {
 loadLists();
 
 // Calendar Functionality
-const calendarDiv = document.getElementById('calendar');
-const currentDate = new Date();
+const calendar = document.getElementById('calendar');
+const currentMonthDisplay = document.createElement('div');
+const calendarGrid = document.createElement('table');
 
-function renderCalendar(year = currentDate.getFullYear(), month = currentDate.getMonth()) {
-    const firstDay = (new Date(year, month)).getDay();
-    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 
-    let calendarHTML = `
-        <table>
-            <thead>
-                <tr><th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th></tr>
-            </thead>
-            <tbody>
-    `;
+function renderCalendar() {
+    currentMonthDisplay.textContent = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth));
 
-    let dayCounter = 1;
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 = Sunday
+
+    let date = 1;
+    let calendarHTML = '<tr>';
+
     for (let i = 0; i < 6; i++) { // Max 6 weeks in a month
-        calendarHTML += '<tr>';
         for (let j = 0; j < 7; j++) {
             if (i === 0 && j < firstDay) {
                 calendarHTML += '<td></td>';
-            } else if (dayCounter > daysInMonth) {
+            } else if (date > daysInMonth) {
                 break;
             } else {
-                calendarHTML += `<td ${dayCounter === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear() ? 'class="today"' : ''}>${dayCounter}</td>`;
-                dayCounter++;
+                calendarHTML += `<td class="${date === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear() ? 'today' : ''}">${date}</td>`;
+                date++;
             }
         }
         calendarHTML += '</tr>';
     }
 
-    calendarHTML += `
-            </tbody>
-        </table>
-    `;
-
-    calendarDiv.innerHTML = calendarHTML;
+    calendarGrid.innerHTML = calendarHTML;
 }
 
-// Initial Calendar Render
-renderCalendar(); 
+function changeMonth(increment) {
+    currentMonth += increment;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    } else if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    renderCalendar();
+}
+
+const prevMonthBtn = document.createElement('button');
+prevMonthBtn.textContent = '<';
+prevMonthBtn.addEventListener('click', () => changeMonth(-1));
+
+const nextMonthBtn = document.createElement('button');
+nextMonthBtn.textContent = '>';
+nextMonthBtn.addEventListener('click', () => changeMonth(1));
+
+calendar.appendChild(currentMonthDisplay);
+calendar.appendChild(prevMonthBtn);
+calendar.appendChild(nextMonthBtn);
+calendar.appendChild(calendarGrid);
+
+renderCalendar(); // Initial rendering
