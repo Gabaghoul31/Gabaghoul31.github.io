@@ -141,4 +141,25 @@ calendar.appendChild(prevMonthBtn);
 calendar.appendChild(nextMonthBtn);
 calendar.appendChild(calendarGrid);
 
+// Create the calendar header rows
+const monthRow = document.createElement('tr');
+const weekdayRow = document.createElement('tr');
+
+monthRow.appendChild(prevMonthBtn); // Add navigation buttons to the month row
+const monthCell = document.createElement('th');
+monthCell.setAttribute('colspan', '5'); // Span 5 columns for month display
+monthCell.appendChild(currentMonthDisplay);
+monthRow.appendChild(monthCell);
+monthRow.appendChild(nextMonthBtn);
+
+const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+weekdays.forEach(day => {
+    const dayCell = document.createElement('th');
+    dayCell.textContent = day;
+    weekdayRow.appendChild(dayCell);
+});
+
+calendarGrid.insertBefore(weekdayRow, calendarGrid.firstChild); // Insert weekday row
+calendarGrid.insertBefore(monthRow, weekdayRow); // Insert month row above weekday row
+
 renderCalendar(); // Initial rendering
