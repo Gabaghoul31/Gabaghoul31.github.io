@@ -71,10 +71,22 @@ li::before {
     margin-right: 5px;
 }
 
-#calendar {
-    width: 80%; 
-    margin: 20px auto; 
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+#calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#calendar th, #calendar td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#calendar th {
+    background-color: #f0f0f0;
+}
+
+#calendar .today {
+    background-color: #e0f2f7; /* Light blue for today's date */
+    font-weight: bold;
 }
