@@ -139,12 +139,12 @@ li::before {
     cursor: pointer;
 }
 
-.future-section { /* New section style */
-    width: 48%;
+.placeholder { /* New style for placeholder section */
+    width: 48%; /* Right half of screen */
     float: left;
     border-radius: 8px;
     padding: 15px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     text-align: center;
-    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 20px;
 }
