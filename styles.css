@@ -93,6 +93,7 @@ li::before {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 8px;
+    font-weight: bold;
     font-family: "Playfair Display", serif; /* Different font for month */
 }
 
