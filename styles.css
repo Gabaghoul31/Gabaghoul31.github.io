@@ -76,17 +76,23 @@ li::before {
     border-collapse: collapse;
 }
 
-#calendar th, #calendar td {
-    padding: 10px;
+#calendar td {
+    width: 14.28%; /* 100% / 7 days */
+    height: 30px;
     text-align: center;
     border: 1px solid #ddd;
 }
 
-#calendar th {
+#calendar .today {
     background-color: #f0f0f0;
 }
 
-#calendar .today {
-    background-color: #e0f2f7; /* Light blue for today's date */
-    font-weight: bold;
+#calendar button {
+    margin: 5px;
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
