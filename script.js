@@ -111,9 +111,31 @@ function renderCalendar() {
             }
         }
         calendarHTML += '</tr>';
+
+        
     }
 
     calendarGrid.innerHTML = calendarHTML;
+    // calendar code
+    const monthDisplay = document.createElement('div');
+    monthDisplay.classList.add('month-display');
+    monthDisplay.appendChild(prevMonthBtn);
+    monthDisplay.appendChild(currentMonthDisplay);
+    monthDisplay.appendChild(nextMonthBtn);
+
+    const weekdays = document.createElement('div');
+    weekdays.classList.add('weekdays');
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    daysOfWeek.forEach(day => {
+        const dayDiv = document.createElement('div');
+        dayDiv.textContent = day;
+        weekdays.appendChild(dayDiv);
+    });
+
+    calendar.innerHTML = ''; // Clear previous content
+    calendar.appendChild(monthDisplay);
+    calendar.appendChild(weekdays);
+    calendar.appendChild(calendarGrid);
 }
 
 function changeMonth(increment) {
@@ -142,24 +164,3 @@ calendar.appendChild(nextMonthBtn);
 calendar.appendChild(calendarGrid);
 
 renderCalendar(); // Initial rendering
-
-// Create the calendar header rows
-const monthRow = document.createElement('tr');
-const weekdayRow = document.createElement('tr');
-
-monthRow.appendChild(prevMonthBtn); // Add navigation buttons to the month row
-const monthCell = document.createElement('th');
-monthCell.setAttribute('colspan', '5'); // Span 5 columns for month display
-monthCell.appendChild(currentMonthDisplay);
-monthRow.appendChild(monthCell);
-monthRow.appendChild(nextMonthBtn);
-
-const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-weekdays.forEach(day => {
-    const dayCell = document.createElement('th');
-    dayCell.textContent = day;
-    weekdayRow.appendChild(dayCell);
-});
-
-calendarGrid.insertBefore(weekdayRow, calendarGrid.firstChild); // Insert weekday row
-calendarGrid.insertBefore(monthRow, weekdayRow); // Insert month row above weekday row
