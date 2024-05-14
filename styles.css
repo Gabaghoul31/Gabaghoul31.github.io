@@ -148,3 +148,26 @@ li::before {
     text-align: center;
     margin-bottom: 20px;
 }
+
+.box2 {
+  font-family: Calibri;
+  width: 100%;
+  height: 100%;
+  background-color: #1d1e22;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-auto-rows: minmax(20px, auto);
+  gap: 10px;
+  padding: 10px;
+}
+
+.box2 ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.box2 li {
+  padding: 5px;
+  color: white;
+}
