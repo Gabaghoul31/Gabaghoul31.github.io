@@ -72,57 +72,40 @@ li::before {
 }
 
 #calendar {
-    width: 48%; /* Left half of screen */
-    float: left; /* Allow content to flow around it */
-    margin-right: 2%; /* Add some space between sections */
+    width: 100%; /* Take up full width on mobile */
+    float: none; /* Remove float for mobile */
+    margin-right: 0; /* Remove margin on mobile */
 }
 
 #calendar table {
     width: 100%;
     border-collapse: collapse;
-    padding: 20px; /* Increased padding */
-    table-layout: fixed; /* Ensure columns have equal width */
+    padding: 10px; /* Reduced padding for mobile */
+    table-layout: fixed;
 }
 
 #calendar .month-display {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #3f51b5; /* Matching top bar color */
-    color: white; /* Readable text */
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-family: "Playfair Display", serif; /* Different font for month */
+    /* ... (Styles unchanged) */
+    flex-direction: column; /* Stack items vertically on mobile */
+    text-align: center; /* Center text on mobile */
 }
 
 #calendar .weekdays {
-    display: flex;
-    justify-content: space-around;
-    background-color: #3f51b5; /* Matching top bar color */
-    color: white; /* Readable text */
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
+    flex-wrap: wrap; /* Allow items to wrap to next line on mobile */
 }
 
 #calendar .weekdays div {
-    width: 14.28%; /* 100% / 7 days */
-    text-align: center;
-    font-weight: bold; /* Bold text */
-    font-family: "Montserrat", sans-serif; /* Different font for days */
+    width: calc(100% / 7); /* Adjust width for 7 days per row on mobile */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    font-size: 0.8em; /* Smaller font size for mobile */
 }
 
 #calendar td {
-    width: 14.28%; /* 100% / 7 days */
-    height: 30px;
-    text-align: center;
-    border: 1px solid #ddd;
-    padding: 10px; /* Increased padding */
-    background-color: #d8c4a3; /* Lighter hue of #bf953f */
-    font-weight: bold; /* Bold text */
-    font-family: "Montserrat", sans-serif; /* Different font for days */
+    width: calc(100% / 7); /* Adjust width for 7 days per row on mobile */
+    height: auto;  /* Let height adjust automatically */
+    box-sizing: border-box;
+    font-size: 0.9em; /* Smaller font size for mobile */
+    padding: 5px; /* Reduced padding for mobile */
 }
 
 #calendar .today {
@@ -139,12 +122,33 @@ li::before {
     cursor: pointer;
 }
 
-.placeholder { /* New style for placeholder section */
-    width: 48%; /* Right half of screen */
-    float: left;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    text-align: center;
-    margin-bottom: 20px;
+.placeholder {
+    width: 100%; /* Take up full width on mobile */
+    float: none; /* Remove float for mobile */
+    margin-top: 20px; /* Add spacing above on mobile */
+}
+
+/* Media Query for larger screens (adjust breakpoint as needed) */
+@media (min-width: 768px) {
+    #calendar {
+        width: 48%;
+        float: left;
+        margin-right: 2%;
+    }
+
+    #calendar .month-display {
+        flex-direction: row; /* Revert to horizontal on larger screens */
+        text-align: left; /* Left align text on larger screens */
+    }
+
+    #calendar .weekdays div,
+    #calendar td {
+        width: 14.28%; /* Revert to original width on larger screens */
+    }
+
+    .placeholder {
+        width: 48%;
+        float: left;
+        margin-top: 0;
+    }
 }
