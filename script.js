@@ -163,7 +163,6 @@ const appointments = {
 // Updating "Coming Soon!" section
 function updateComingSoon(dayNumber) {
     const placeholder = document.querySelector('.placeholder');
-    placeholder.innerHTML = ''; // Clear previous content
     const dayOfWeek = new Date(currentYear, currentMonth, dayNumber).toLocaleDateString('en-US', { weekday: 'long' });
 
     placeholder.innerHTML = `<h2>${dayOfWeek}</h2>`; // Display day of the week
