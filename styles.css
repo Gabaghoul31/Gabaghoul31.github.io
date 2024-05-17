@@ -76,15 +76,16 @@ li::before {
     display: flex; /* Use flexbox for layout */
 }
 
+# calendar, .placeholder {
+    width: 48%;
+    float: left;
+}
+
 #calendar { 
-        width: 48%; /* Left half of screen */
-        float: left; /* Allow content to flow around it */
         margin-right: 2%; /* Add some space between sections */
     }
 
     .placeholder {
-        width: 48%; /* Right half of screen */
-        float: left;
         order: 0; /* Reset order for desktop */
     }
 
@@ -96,6 +97,10 @@ li::before {
 
     #calendar, .placeholder {
         width: 100%; /* Full width on mobile */
+    }
+
+    #calendar {
+        margin-bottom: 2%;
     }
 
     #calendar table {
