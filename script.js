@@ -111,9 +111,31 @@ function renderCalendar() {
             }
         }
         calendarHTML += '</tr>';
-
-        
     }
+
+    // Add click event listener to each day cell
+    const dayCells = calendarGrid.querySelectorAll('td');
+    dayCells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            // Remove "selected" class from all cells
+            dayCells.forEach(c => c.classList.remove('selected'));
+            // Add "selected" class to the clicked cell
+            cell.classList.add('selected');
+
+            // Update the placeholder content
+            const placeholder = document.querySelector('.placeholder');
+            const dayOfWeek = new Date(currentYear, currentMonth, parseInt(cell.textContent)).toLocaleDateString('en-US', { weekday: 'long' });
+            placeholder.innerHTML = `
+                <h2 style="font-family: 'Playfair Display', serif; color: #bf953f;">${dayOfWeek}</h2>
+                <ul style="list-style-type: disc; color: #f48fb1; text-align: left; padding-left: 20px;">
+                    <li>Generic Appointment 1</li>
+                    <li>Generic Appointment 2</li>
+                    <li>Generic Appointment 3</li>
+                </ul>
+            `;
+        });
+    });
+}
 
     calendarGrid.innerHTML = calendarHTML;
     // calendar code
