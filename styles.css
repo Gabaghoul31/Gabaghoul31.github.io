@@ -212,7 +212,7 @@ li::before {
     text-align: left;
 }
 
-/* Remove default list styling from placeholder paragraphs */
-.placeholder p {
-    list-style: none; /* This removes any default list styling from the paragraphs inside the placeholder */
+/* Remove extra bullet from nested lists in placeholder*/
+.placeholder ul ul {
+    list-style-type: none;
 }
