@@ -207,7 +207,12 @@ li::before {
 
 /* Style for appointments list */
 .placeholder ul {
-    list-style-type: disc; /* Use disc for bullet points */
+    list-style-type: disc;
     padding-left: 20px;
-    text-align: left; /* Align appointments to the left */
+    text-align: left;
+}
+
+/* Remove default list styling from placeholder paragraphs */
+.placeholder p {
+    list-style: none; /* This removes any default list styling from the paragraphs inside the placeholder */
 }
