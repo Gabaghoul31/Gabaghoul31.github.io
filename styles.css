@@ -216,7 +216,3 @@ li::before {
 .placeholder ul li::before {
     content: none;
 }
-
-.placeholder ul ul {
-    list-style-type: none;
-}
