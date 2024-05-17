@@ -212,7 +212,11 @@ li::before {
     text-align: left;
 }
 
-/* Remove extra bullet from nested lists in placeholder*/
+/* Remove custom bullet from nested lists in placeholder */
+.placeholder ul li::before {
+    content: none;
+}
+
 .placeholder ul ul {
     list-style-type: none;
 }
