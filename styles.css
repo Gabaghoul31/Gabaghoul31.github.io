@@ -94,8 +94,12 @@ li::before {
         flex-direction: column; /* Stack vertically on mobile */
     }
 
-    #calendar, .placeholder {
+    #calendar {
         width: 100%; /* Full width on mobile */
+    }
+
+    .placeholder {
+        width: 90%
     }
 
     #calendar {
