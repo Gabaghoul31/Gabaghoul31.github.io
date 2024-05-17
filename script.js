@@ -110,32 +110,8 @@ function renderCalendar() {
                 date++;
             }
         }
-        calendarHTML += '</tr>';
+        calendarHTML += '</tr>';   
     }
-
-    // Add click event listener to each day cell
-    const dayCells = calendarGrid.querySelectorAll('td');
-    dayCells.forEach(cell => {
-        cell.addEventListener('click', () => {
-            // Remove "selected" class from all cells
-            dayCells.forEach(c => c.classList.remove('selected'));
-            // Add "selected" class to the clicked cell
-            cell.classList.add('selected');
-
-            // Update the placeholder content
-            const placeholder = document.querySelector('.placeholder');
-            const dayOfWeek = new Date(currentYear, currentMonth, parseInt(cell.textContent)).toLocaleDateString('en-US', { weekday: 'long' });
-            placeholder.innerHTML = `
-                <h2 style="font-family: 'Playfair Display', serif; color: #bf953f;">${dayOfWeek}</h2>
-                <ul style="list-style-type: disc; color: #f48fb1; text-align: left; padding-left: 20px;">
-                    <li>Generic Appointment 1</li>
-                    <li>Generic Appointment 2</li>
-                    <li>Generic Appointment 3</li>
-                </ul>
-            `;
-        });
-    });
-}
 
     calendarGrid.innerHTML = calendarHTML;
     // calendar code
@@ -158,6 +134,51 @@ function renderCalendar() {
     calendar.appendChild(monthDisplay);
     calendar.appendChild(weekdays);
     calendar.appendChild(calendarGrid);
+}
+
+// Event Listeners for Calendar Days
+calendarGrid.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.tagName === 'TD' && !target.classList.contains('not-month')) {
+        highlightDay(target);
+        updateComingSoon(target.textContent);
+    }
+});
+
+// Highlighting the clicked day
+function highlightDay(dayElement) {
+    const allDays = calendarGrid.querySelectorAll('td');
+    allDays.forEach(day => day.classList.remove('selected')); // Remove previous highlight
+    dayElement.classList.add('selected'); // Add highlight
+}
+
+// Placeholder appointment data
+const appointments = {
+    1: ["Doctor's appointment at 10:00 AM", "Lunch with friends at 12:30 PM"],
+    7: ["Grocery shopping at 2:00 PM"],
+    15: ["Dinner with family at 6:00 PM"],
+    // ... Add more appointments for other dates
+};
+
+// Updating "Coming Soon!" section
+function updateComingSoon(dayNumber) {
+    const placeholder = document.querySelector('.placeholder');
+    const dayOfWeek = new Date(currentYear, currentMonth, dayNumber).toLocaleDateString('en-US', { weekday: 'long' });
+
+    placeholder.innerHTML = `<h2>${dayOfWeek}</h2>`; // Display day of the week
+
+    // Display appointments (if any)
+    if (appointments[dayNumber]) {
+        const appointmentList = document.createElement('ul');
+        appointments[dayNumber].forEach(appt => {
+            const listItem = document.createElement('li');
+            listItem.textContent = appt;
+            appointmentList.appendChild(listItem);
+        });
+        placeholder.appendChild(appointmentList);
+    } else {
+        placeholder.innerHTML += '<p>No appointments for this day.</p>';
+    }
 }
 
 function changeMonth(increment) {
