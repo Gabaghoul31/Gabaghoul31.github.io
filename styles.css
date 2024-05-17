@@ -76,11 +76,17 @@ li::before {
     display: flex; /* Use flexbox for layout */
 }
 
-#calendar, .placeholder {
-    width: 48%; /* Half width on desktop */
-    margin-bottom: 20px;
-    box-sizing: border-box; 
-}
+#calendar { 
+        width: 48%; /* Left half of screen */
+        float: left; /* Allow content to flow around it */
+        margin-right: 2%; /* Add some space between sections */
+    }
+
+    .placeholder {
+        width: 48%; /* Right half of screen */
+        float: left;
+        order: 0; /* Reset order for desktop */
+    }
 
 /* Media query for mobile devices */
 @media (max-width: 768px) { 
