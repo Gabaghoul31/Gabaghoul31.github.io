@@ -198,5 +198,16 @@ li::before {
     margin-bottom: 20px;
 }
 
-#calendar .selected { /* Add style for selected day */
-    background-color: #90caf9; /* Light blue */
+
+/* Style for selected day */
+#calendar td.selected {
+    background-color: #f48fb1; /* Pink background for selected day */
+    color: white;
+}
+
+/* Style for appointments list */
+.placeholder ul {
+    list-style-type: disc; /* Use disc for bullet points */
+    padding-left: 20px;
+    text-align: left; /* Align appointments to the left */
+}
