@@ -137,10 +137,12 @@ function renderCalendar() {
 
     const currentDay = new Date().getDate();
     const currentDayElement = calendarGrid.querySelector(`td:nth-child(${currentDay + firstDay})`);
-    if (currentDayElement) {
-        highlightDay(currentDayElement);
-        updateComingSoon(currentDay);
-    }
+    const allDays = calendarGrid.querySelectorAll('td');
+    allDays.forEach((day) => {
+        day.addEventListener('click', () => {
+            highlightDay(day);
+            updateComingSoon(day.textContent);
+        });
 }
 
 // Event Listeners for Calendar Days
