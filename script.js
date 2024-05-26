@@ -114,6 +114,16 @@ function renderCalendar() {
     }
 
     calendarGrid.innerHTML = calendarHTML;
+
+    // Add event listeners to calendar grid cells
+    const calendarCells = calendarGrid.querySelectorAll('td');
+    calendarCells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            highlightDay(cell);
+            updateComingSoon(cell.textContent);
+        });
+    });
+    
     // calendar code
     const monthDisplay = document.createElement('div');
     monthDisplay.classList.add('month-display');
@@ -142,15 +152,6 @@ function renderCalendar() {
         updateComingSoon(currentDay);
     }
 }
-
-// Event Listeners for Calendar Days
-calendarGrid.addEventListener('click', (event) => {
-    const target = event.target;
-    if (target.tagName === 'TD' && !target.classList.contains('not-month')) {
-        highlightDay(target);
-        updateComingSoon(target.textContent);
-    }
-});
 
 // Highlighting the clicked day
 function highlightDay(dayElement) {
