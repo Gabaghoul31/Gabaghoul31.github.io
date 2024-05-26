@@ -9,7 +9,7 @@ const newOtherInput = document.getElementById('newItemOther');
 
 export function loadLists() {
     console.log("Attempting to load lists...");
-    fetchAPI('https://morning-woodland-96579-141743ef28e3.herokuapp.com/update-data', 'GET')
+    fetchAPI('https://morning-woodland-96579-141743ef28e3.herokuapp.com/load-data', 'GET')
     .then(response => {
         if (!response.ok) throw new Error('Failed to load data');
         return response.json(); // Automatically parses JSON
