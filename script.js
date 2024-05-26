@@ -181,6 +181,20 @@ function updateComingSoon(dayNumber) {
     }
 }
 
+// Select current day on page load
+function selectCurrentDay() {
+    const today = new Date();
+    const currentDay = today.getDate();
+
+    const allDays = calendarGrid.querySelectorAll('td');
+    allDays.forEach(day => {
+        if (day.textContent === String(currentDay)) {
+            highlightDay(day);
+            updateComingSoon(currentDay);
+        }
+    });
+}
+
 function changeMonth(increment) {
     currentMonth += increment;
     if (currentMonth < 0) {
@@ -207,3 +221,4 @@ calendar.appendChild(nextMonthBtn);
 calendar.appendChild(calendarGrid);
 
 renderCalendar(); // Initial rendering
+selectCurrentDay();
