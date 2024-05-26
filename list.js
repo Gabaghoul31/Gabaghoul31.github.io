@@ -20,10 +20,10 @@ export function loadLists() {
         otherList.innerHTML = '';
 
         data.groceryList.forEach(item => {
-            groceryList.appendChild(createListItem(item, groceryList));
+            groceryList.appendChild(createListItem(item, groceryList, saveLists));
         });
         data.otherList.forEach(item => {
-            otherList.appendChild(createListItem(item, otherList));
+            otherList.appendChild(createListItem(item, otherList, saveLists));
         });
     })
     .catch(error => {
@@ -45,7 +45,7 @@ export function saveLists() {
 addGroceryBtn.addEventListener('click', () => {
     const newItem = newGroceryInput.value;
     if (newItem) {
-        groceryList.appendChild(createListItem(newItem, groceryList));
+        groceryList.appendChild(createListItem(newItem, groceryList, saveLists));
         newGroceryInput.value = '';
         saveLists();
     }
@@ -54,7 +54,7 @@ addGroceryBtn.addEventListener('click', () => {
 addOtherBtn.addEventListener('click', () => {
     const newItem = newOtherInput.value;
     if (newItem) {
-        otherList.appendChild(createListItem(newItem, otherList));
+        otherList.appendChild(createListItem(newItem, otherList, saveLists));
         newOtherInput.value = '';
         saveLists();
     }
