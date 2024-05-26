@@ -1,3 +1,5 @@
+import { saveLists } from './list.js';  // Import the saveLists function
+
 export function createListItem(text, list) {
     const listItem = document.createElement('li');
     const textNode = document.createTextNode(text);
