@@ -134,19 +134,10 @@ function renderCalendar() {
     calendar.appendChild(monthDisplay);
     calendar.appendChild(weekdays);
     calendar.appendChild(calendarGrid);
-
-    const currentDay = new Date().getDate();
-    const currentDayElement = calendarGrid.querySelector(`td:nth-child(${currentDay + firstDay})`);
-    const allDays = calendarGrid.querySelectorAll('td');
-    allDays.forEach((day) => {
-        day.addEventListener('click', () => {
-            highlightDay(day);
-            updateComingSoon(day.textContent);
-        });
 }
 
 // Event Listeners for Calendar Days
-calendar.addEventListener('click', (event) => {
+calendarGrid.addEventListener('click', (event) => {
     const target = event.target;
     if (target.tagName === 'TD' && !target.classList.contains('not-month')) {
         highlightDay(target);
@@ -171,21 +162,37 @@ const appointments = {
 
 // Updating "Coming Soon!" section
 function updateComingSoon(dayNumber) {
+    const placeholder = document.querySelector('.placeholder');
     const dayOfWeek = new Date(currentYear, currentMonth, dayNumber).toLocaleDateString('en-US', { weekday: 'long' });
-    const appointmentList = document.createElement('ul');
+
+    placeholder.innerHTML = `<h2>${dayOfWeek}</h2>`; // Display day of the week
 
     // Display appointments (if any)
     if (appointments[dayNumber]) {
+        const appointmentList = document.createElement('ul');
         appointments[dayNumber].forEach(appt => {
             const listItem = document.createElement('li');
             listItem.textContent = appt;
             appointmentList.appendChild(listItem);
         });
+        placeholder.appendChild(appointmentList);
+    } else {
+        placeholder.innerHTML += '<p>No appointments for this day.</p>';
     }
+}
 
-    const comingSoonSection = document.querySelector('.coming-soon');
-    comingSoonSection.innerHTML = `<h2>${dayOfWeek}</h2>`;
-    comingSoonSection.appendChild(appointmentList);
+// Select current day on page load
+function selectCurrentDay() {
+    const today = new Date();
+    const currentDay = today.getDate();
+
+    const allDays = calendarGrid.querySelectorAll('td');
+    allDays.forEach(day => {
+        if (day.textContent === String(currentDay)) {
+            highlightDay(day);
+            updateComingSoon(currentDay);
+        }
+    });
 }
 
 function changeMonth(increment) {
@@ -214,3 +221,4 @@ calendar.appendChild(nextMonthBtn);
 calendar.appendChild(calendarGrid);
 
 renderCalendar(); // Initial rendering
+selectCurrentDay(); // Select current day on page load
