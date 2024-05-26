@@ -7,6 +7,7 @@ export function createListItem(text, list) {
     removeBtn.textContent = 'Remove';
     removeBtn.addEventListener('click', () => {
         list.removeChild(listItem);
+        savelists();
     });
 
     listItem.appendChild(removeBtn);
