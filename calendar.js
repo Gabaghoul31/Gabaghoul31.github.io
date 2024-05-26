@@ -1,5 +1,11 @@
-// Function to render the calendar
-function renderCalendar(calendar, currentMonthDisplay, calendarGrid, currentMonth, currentYear) {
+const calendar = document.getElementById('calendar');
+const currentMonthDisplay = document.createElement('div');
+const calendarGrid = document.createElement('table');
+
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+export function renderCalendar() {
     currentMonthDisplay.textContent = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(new Date(currentYear, currentMonth));
 
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -45,15 +51,32 @@ function renderCalendar(calendar, currentMonthDisplay, calendarGrid, currentMont
     calendar.appendChild(calendarGrid);
 }
 
-// Function to highlight a day
+// Event Listeners for Calendar Days
+calendarGrid.addEventListener('click', (event) => {
+    const target = event.target;
+    if (target.tagName === 'TD' && !target.classList.contains('not-month')) {
+        highlightDay(target);
+        updateComingSoon(target.textContent);
+    }
+});
+
+// Highlighting the clicked day
 function highlightDay(dayElement) {
     const allDays = calendarGrid.querySelectorAll('td');
     allDays.forEach(day => day.classList.remove('selected')); // Remove previous highlight
     dayElement.classList.add('selected'); // Add highlight
 }
 
-// Function to update the "Coming Soon!" section
-function updateComingSoon(dayNumber, appointments, currentYear, currentMonth) {
+// Placeholder appointment data
+const appointments = {
+    1: ["Doctor's appointment at 10:00 AM", "Lunch with friends at 12:30 PM"],
+    7: ["Grocery shopping at 2:00 PM"],
+    15: ["Dinner with family at 6:00 PM"],
+    // ... Add more appointments for other dates
+};
+
+// Updating "Coming Soon!" section
+function updateComingSoon(dayNumber) {
     const placeholder = document.querySelector('.placeholder');
     const dayOfWeek = new Date(currentYear, currentMonth, dayNumber).toLocaleDateString('en-US', { weekday: 'long' });
 
@@ -73,8 +96,8 @@ function updateComingSoon(dayNumber, appointments, currentYear, currentMonth) {
     }
 }
 
-// Function to select the current day on page load
-function selectCurrentDay(calendarGrid) {
+// Select current day on page load
+function selectCurrentDay() {
     const today = new Date();
     const currentDay = today.getDate();
 
@@ -82,13 +105,12 @@ function selectCurrentDay(calendarGrid) {
     allDays.forEach(day => {
         if (day.textContent === String(currentDay)) {
             highlightDay(day);
-            updateComingSoon(currentDay, appointments, today.getFullYear(), today.getMonth());
+            updateComingSoon(currentDay);
         }
     });
 }
 
-// Function to change the month
-function changeMonth(increment, currentMonth, currentYear, calendarGrid, currentMonthDisplay) {
+function changeMonth(increment) {
     currentMonth += increment;
     if (currentMonth < 0) {
         currentMonth = 11;
@@ -97,7 +119,23 @@ function changeMonth(increment, currentMonth, currentYear, calendarGrid, current
         currentMonth = 0;
         currentYear++;
     }
-    renderCalendar(calendar, currentMonthDisplay, calendarGrid, currentMonth, currentYear);
+    renderCalendar();
 }
 
-export { renderCalendar, highlightDay, updateComingSoon, selectCurrentDay, changeMonth };
+const prevMonthBtn = document.createElement('button');
+prevMonthBtn.textContent = '<';
+prevMonthBtn.addEventListener('click', () => changeMonth(-1));
+
+const nextMonthBtn = document.createElement('button');
+nextMonthBtn.textContent = '>';
+nextMonthBtn.addEventListener('click', () => changeMonth(1));
+
+calendar.appendChild(currentMonthDisplay);
+calendar.appendChild(prevMonthBtn);
+calendar.appendChild(nextMonthBtn);
+calendar.appendChild(calendarGrid);
+
+export function initCalendar() {
+    renderCalendar(); // Initial rendering
+    selectCurrentDay(); // Select current day on page load
+}
