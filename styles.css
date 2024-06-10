@@ -93,6 +93,7 @@ li::before {
     flex-direction: column; /* Stack vertically */
     align-items: center;   /* Center horizontally */
     margin-top: 20px;      /* Add space above input */
+    padding-top: 20px;     /* Add padding to move it lower */
 }
 
 .placeholder input[type="text"], .placeholder button {
