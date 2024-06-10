@@ -88,16 +88,16 @@ li::before {
         order: 0; /* Reset order for desktop */
     }
 
-.placeholder .add-appointment-container {
-    display: flex; /* Use flexbox for easy centering */
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px; /* Space from the top content */
+.placeholder .input-container { /* New container for centering */
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    align-items: center;   /* Center horizontally */
+    margin-top: 20px;      /* Add space above input */
 }
 
 .placeholder input[type="text"], .placeholder button {
-    padding: 10px;
-    margin: 5px;
+    width: 80%;           /* Make input and button wider */
+    margin: 5px 0;        /* Add space between input and button */
 }
 
 /* Media query for mobile devices */
@@ -210,12 +210,12 @@ li::before {
     margin-bottom: 20px;
 }
 
-.placeholder .add-appointment-container {
-        flex-direction: column; /* Stack vertically on mobile */
+.placeholder .input-container {
+        width: 100%; 
     }
 
     .placeholder input[type="text"], .placeholder button {
-        width: 100%; /* Full width on mobile */
+        width: 90%; 
     }
 
 /* Style for selected day */
