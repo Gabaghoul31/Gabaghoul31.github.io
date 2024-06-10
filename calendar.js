@@ -29,7 +29,7 @@ export function renderCalendar() {
     }
 
     calendarGrid.innerHTML = calendarHTML;
-    // calendar code
+
     const monthDisplay = document.createElement('div');
     monthDisplay.classList.add('month-display');
     monthDisplay.appendChild(prevMonthBtn);
@@ -80,6 +80,9 @@ function updateComingSoon(dayNumber) {
     const placeholder = document.querySelector('.placeholder');
     const dayOfWeek = new Date(currentYear, currentMonth, dayNumber).toLocaleDateString('en-US', { weekday: 'long' });
 
+    // Preserve the input-container
+    const inputContainer = document.querySelector('.input-container').cloneNode(true);
+
     placeholder.innerHTML = `<h2>${dayOfWeek}</h2>`; // Display day of the week
 
     // Display appointments (if any)
@@ -94,6 +97,9 @@ function updateComingSoon(dayNumber) {
     } else {
         placeholder.innerHTML += '<p>No appointments for this day.</p>';
     }
+
+    // Re-attach the input-container
+    placeholder.appendChild(inputContainer);
 }
 
 // Select current day on page load
